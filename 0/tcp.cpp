@@ -75,11 +75,17 @@ int main() {
     std::cout << "new trhead" << std::endl;
 
     i++;
+
+    std::cout << "HELLO AFTER I++" << std::endl;
     if (i >= 5) {
       std::cout << "we breaking loop" << std::endl;
       break;
     }
+
+    std::cout << "HELLO xxx IF" << std::endl;
   }
+
+  std::cout << "CLOSED WHILE" << std::endl;
 
   for (auto t : threads) {
     if (t != nullptr) {
