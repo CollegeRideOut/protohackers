@@ -16,12 +16,13 @@ void handle_connection(int sock_fd) {
     recived_buffer = recv(sock_fd, &buffer, sizeof buffer, 0);
 
     std::cout << "received on " << sock_fd << std::endl;
-
     if (recived_buffer <= 0) {
+      std::cout << "recv error is finnished" << std::endl;
       break;
-    } else {
-      send(sock_fd, &buffer, recived_buffer, 0);
     }
+    std::cout << "sending " << sock_fd << std::endl;
+    send(sock_fd, &buffer, recived_buffer, 0);
+    std::cout << "sent " << sock_fd << std::endl;
   }
 }
 
