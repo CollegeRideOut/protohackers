@@ -17,7 +17,7 @@ void handle_connection(int sock_fd) {
 
     std::cout << "received on " << sock_fd << std::endl;
     if (recived_buffer <= 0) {
-      std::cout << "recv error is finnished" << std::endl;
+      std::cout << "recv error is finnished: " << recived_buffer << std::endl;
       break;
     }
     std::cout << "sending " << sock_fd << std::endl;
@@ -75,7 +75,8 @@ int main() {
     std::cout << "new trhead" << std::endl;
 
     i++;
-    if (i == 5) {
+    if (i >= 5) {
+      std::cout << "we breaking loop" << std::endl;
       break;
     }
   }
