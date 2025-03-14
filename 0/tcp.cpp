@@ -66,6 +66,8 @@ int main() {
   std::thread *threads[5]{};
   while (true) {
     addr_size[i] = sizeof their_addr[i];
+
+    std::cout << "new connection begining" << std::endl;
     int new_sock_fd =
         accept(sockfd, (struct sockaddr *)&their_addr[i], &addr_size[i]);
     std::cout << "new connection" << std::endl;
@@ -77,6 +79,10 @@ int main() {
     i++;
 
     std::cout << "HELLO AFTER I++" << std::endl;
+    if (new_sock_fd < 0) {
+      std::cout << "accept error" << std::endl;
+      return 5;
+    }
     if (i >= 5) {
       std::cout << "we breaking loop" << std::endl;
       break;
