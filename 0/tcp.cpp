@@ -7,14 +7,19 @@
 #include <thread>
 
 void handle_connection(int sock_fd) {
+
+  std::cout << "new handle connection on " << sock_fd << std::endl;
   int buffer[1024];
 
   int recived_buffer = 0;
   while (true) {
     recived_buffer = recv(sock_fd, &buffer, sizeof buffer, 0);
+
+    std::cout << "received on " << sock_fd << std::endl;
+
     if (recived_buffer <= 0) {
       break;
-    }else{
+    } else {
       send(sock_fd, &buffer, recived_buffer, 0);
     }
   }
@@ -62,8 +67,11 @@ int main() {
     addr_size[i] = sizeof their_addr[i];
     int new_sock_fd =
         accept(sockfd, (struct sockaddr *)&their_addr[i], &addr_size[i]);
+    std::cout << "new connection" << std::endl;
 
     threads[i] = new std::thread(handle_connection, new_sock_fd);
+
+    std::cout << "new trhead" << std::endl;
 
     i++;
     if (i == 5) {
