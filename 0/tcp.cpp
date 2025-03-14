@@ -6,7 +6,19 @@
 #include <sys/types.h>
 #include <thread>
 
-void handle_connection(int sock_fd) {}
+void handle_connection(int sock_fd) {
+  int buffer[1024];
+
+  int recived_buffer = 0;
+  while (true) {
+    recived_buffer = recv(sock_fd, &buffer, sizeof buffer, 0);
+    if (recived_buffer <= 0) {
+      break;
+    }else{
+      send(sock_fd, &buffer, recived_buffer, 0);
+    }
+  }
+}
 
 int main() {
   constexpr char *MY_PORT = (char *)"7";
@@ -59,13 +71,11 @@ int main() {
     }
   }
 
-
-  for(auto t : threads){
-    if(t != nullptr){
+  for (auto t : threads) {
+    if (t != nullptr) {
       t->join();
     }
   }
-
 
   std::cout << "all good";
   return 0;
