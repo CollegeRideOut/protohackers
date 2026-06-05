@@ -36,36 +36,10 @@ func main() {
 
 func handleConnection(conn net.Conn) {
 	defer conn.Close()
-	fmt.Println("Handling connection...")
 
-	buffer := make([]byte, 0, 4096)
-	tmp := make([]byte, 256)
+	fmt.Println("client connected")
 
-	for {
+	n, err := io.Copy(conn, conn)
 
-		n, err := conn.Read(tmp)
-		if err == io.EOF {
-			fmt.Println("connection closed cause of EOF")
-			break
-		}
-
-		if err != nil {
-			fmt.Println("error reading the from the connection", err.Error())
-			return
-		}
-
-		buffer = append(buffer, tmp[:n]...)
-	}
-
-	for len(buffer) > 0 {
-		n, err := conn.Write(buffer)
-		if err != nil {
-			log.Println("write error:", err)
-			return
-		}
-
-		buffer = buffer[n:]
-	}
-	fmt.Println("Connection closed")
-
+	fmt.Println("copied bytes:", n, "err:", err)
 }
