@@ -10,35 +10,28 @@ import (
 
 func main() {
 	fmt.Println("Starting server...")
-	port := ":8080"
 
-	envPort := os.Getenv("PORT")
-	if envPort != "" {
-		port = envPort
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
 	}
 
-	fmt.Println("Using port from environment variable:", port)
+	fmt.Println("Listening on port:", port)
 
-	ln, err := net.Listen("tcp", port)
+	ln, err := net.Listen("tcp", ":"+port)
 	if err != nil {
-		log.Println(err)
-		return
+		log.Fatal(err)
 	}
 
 	for {
-		fmt.Println("Waiting for connection...")
 		conn, err := ln.Accept()
-
-		fmt.Println("Connection accepted")
-
 		if err != nil {
 			log.Println(err)
-			return
+			continue
 		}
 
 		go handleConnection(conn)
 	}
-
 }
 
 func handleConnection(conn net.Conn) {
