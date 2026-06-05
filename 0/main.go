@@ -45,6 +45,7 @@ func handleConnection(conn net.Conn) {
 
 		n, err := conn.Read(tmp)
 		if err == io.EOF {
+			fmt.Println("connection closed cause of EOF")
 			break
 		}
 
@@ -65,5 +66,6 @@ func handleConnection(conn net.Conn) {
 
 		buffer = buffer[n:]
 	}
+	fmt.Println("Connection closed")
 
 }
