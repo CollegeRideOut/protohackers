@@ -5,18 +5,31 @@ import (
 	"io"
 	"log"
 	"net"
+	"os"
 )
 
 func main() {
+	fmt.Println("Starting server...")
+	port := ":8080"
 
-	ln, err := net.Listen("tcp", ":8080")
+	envPort := os.Getenv("PORT")
+	if envPort != "" {
+		port = envPort
+	}
+
+	fmt.Println("Using port from environment variable:", port)
+
+	ln, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Println(err)
 		return
 	}
 
 	for {
+		fmt.Println("Waiting for connection...")
 		conn, err := ln.Accept()
+
+		fmt.Println("Connection accepted")
 
 		if err != nil {
 			log.Println(err)
@@ -30,6 +43,7 @@ func main() {
 
 func handleConnection(conn net.Conn) {
 	defer conn.Close()
+	fmt.Println("Handling connection...")
 
 	buffer := make([]byte, 0, 4096)
 	tmp := make([]byte, 256)
