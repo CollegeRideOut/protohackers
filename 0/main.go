@@ -37,9 +37,28 @@ func main() {
 func handleConnection(conn net.Conn) {
 	defer conn.Close()
 
-	fmt.Println("client connected")
+	buf := make([]byte, 4096)
 
-	n, err := io.Copy(conn, conn)
+	for {
+		n, err := conn.Read(buf)
 
-	fmt.Println("copied bytes:", n, "err:", err)
+		if n > 0 {
+			written := 0
+			for written < n {
+				m, werr := conn.Write(buf[written:n])
+				if werr != nil {
+					return
+				}
+				written += m
+			}
+		}
+
+		if err == io.EOF {
+			return
+		}
+
+		if err != nil {
+			return
+		}
+	}
 }
